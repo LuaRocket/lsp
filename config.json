@@ -1,0 +1,5 @@
+{
+  "name": "Rocket",
+  "files": ["*.rklua"],
+  "words": ["--rklua"]
+}
