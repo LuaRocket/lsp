@@ -68,6 +68,11 @@ function LuaCommand.permissionMessage(message) end
 ---@return LuaCommand
 function LuaCommand.minArgs(minArgs) end
 
+---Set the custom fallback prefix. Defaults to the prefix specified in the config file or "rocket" otherwise
+---@param prefix string The custom fallback prefix
+---@return LuaCommand
+function LuaCommand.fallbackPrefix(prefix) end
+
 ---Returns the command object
 ---@return LuaCommand
 function LuaCommand.reference() end

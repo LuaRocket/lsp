@@ -22,32 +22,49 @@ players = {}
 ---@return LuaPlayer
 function players.get(name) end
 
----@class LuaPlayer
----@field name string The username of the player
----@field uuid string The UUID of the player
----@field world string The world the player is currently in
----@field ip string The IP address of the player
+---Retrieve a player instance by their UUID
+---@param uuid string The UUID of the player to retrieve.
+---@return LuaPlayer
+function players.getByUUID(uuid) end
+
+---Retrieve all player instances currently online
+---@return LuaPlayer[] A list of all players currently online
+function players.getAll() end
+
+---Retrieve an offline player instance by their username
+---@param name string The name of the player to retrieve.
+---@return LuaOfflinePlayer
+function players.getOfflinePlayer(name) end
+
+---Retrieve an offline player instance by their UUID
+---@param uuid string The UUID of the player to retrieve.
+---@return LuaOfflinePlayer
+function players.getOfflinePlayerByUUID(uuid) end
+
+---Retrieve an offline player instance from the Bukkit cache
+---@param name string The name of the player to retrieve.
+---@return LuaOfflinePlayer | nil
+function players.getCachedOfflinePlayer(name) end
+
+---Retrieve all offline player instances
+---@return LuaOfflinePlayer[] A list of all offline players
+function players.getAllOfflinePlayers() end
+
+---@class LuaPlayer: LuaOfflinePlayer
+---@field location LuaLocation The current location of the player
+---@field name string The name of the player
+---@field world string The name of the world the player is in
+---@field ip string | nil The IP address of the player, if available
 ---@field isFlying boolean Whether the player is flying
 ---@field isSneaking boolean Whether the player is sneaking
 ---@field isSprinting boolean Whether the player is sprinting
----@field isBlocking boolean Whether the player is blocking with a shield
+---@field isBlocking boolean Whether the player is blocking
 ---@field isSleeping boolean Whether the player is sleeping
----@field targetBlockType string The type of block the player is looking at
----@field targetBlockLocation LuaLocation The location of the block the player is looking at
----@field targetBlockLightLevel number The light level of the block the player is looking at
----@field targetBlockTemperature number The temperature of the block the player is looking at
----@field targetBlockHumidity number The humidity of the block the player is looking at
----@field health number The health of the player
----@field foodLevel number The food level of the player
----@field gamemode Gamemode The gamemode of the player
----@field xp number The experience total of the player
----@field level number The experience level of the player
----@field location LuaLocation The location of the player
----@field isOp boolean Whether the player is an operator
----@field saturation number The saturation level of the player
----@field exhaustion number The food exhaustion level of the player
----@field displayName string The display name of the player
----@field tabListName string The name of the player in the tab list
+---@field targetBlockType string | nil The type of block the player is looking at, if available
+---@field targetBlockLocation LuaLocation | nil The location of the block the player is looking at, if available
+---@field targetBlockLightLevel number | nil The light level of the block the player is looking at, if available
+---@field targetBlockTemperature number | nil The temperature of the block the player is looking at, if available
+---@field targetBlockHumidity number | nil The humidity of the block the player is looking at, if available
 local LuaPlayer = {}
 
 ---Send a formatted messae to the player
@@ -58,22 +75,23 @@ function LuaPlayer.send(message) end
 ---Send an action bar message to the player
 ---@param message string The message to send to the player
 ---@return boolean Whether the message was sent successfully
-function LuaPlayer.sendActionBar(message) end
+function LuaPlayer.sendActionbar(message) end
 
----@class TimeTable
+---@class TitleTimeTable
 ---@field fadeIn number The time in ticks for the title to fade in
 ---@field stay number The time in ticks for the title to stay on screen
 ---@field fadeOut number The time in ticks for the title to fade out
+local TitleTimeTable = {}
 
 ---Send a title to the player
 ---@param message string The message to display to the player
----@param timeTable TimeTable The time table for the title
+---@param timeTable TitleTimeTable The time table for the title
 ---@return boolean Whether the title was sent successfully
 function LuaPlayer.sendTitle(message, timeTable) end
 
 ---Send a subtitle to the player
 ---@param message string The message to display to the player
----@param timeTable TimeTable The time table for the subtitle
+---@param timeTable TitleTimeTable The time table for the subtitle
 ---@return boolean Whether the subtitle was sent successfully
 function LuaPlayer.sendSubtitle(message, timeTable) end
 
@@ -81,7 +99,7 @@ function LuaPlayer.sendSubtitle(message, timeTable) end
 ---@param time number The time to set the client side time to
 ---@param relative boolean Whether the time should be kept relative to the server time
 ---@return boolean Whether the client side time was set successfully
-function LuaPlayer.setTime(time, relative) end
+function LuaPlayer.setPlayerTime(time, relative) end
 
 ---Add a permission node to the player
 ---@param node string The permission node to add
@@ -98,15 +116,38 @@ function LuaPlayer.deop() end
 
 ---Teleports the player to a location
 ---@param location LuaLocation The location to teleport the player to
----@returns boolean Whether the player was teleported successfully
+---@return boolean Whether the player was teleported successfully
 function LuaPlayer.teleport(location) end
 
 ---Determines if the player has a permission node
 ---@param node string The permission node to check
----@returns boolean Whether the player has the permission node
+---@return boolean Whether the player has the permission node
 function LuaPlayer.hasPermission(node) end
 
 ---Determines whether the player is in a permission group
 ---@param group string The name of the group to check
----@returns boolean Whether the player is in the group
-function LuaPlayer.inGroup(group) end
+---@return boolean Whether the player is in the group
+function LuaPlayer.isInGroup(group) end
+
+---Sets the player's gamemode
+---@param gamemode string The gamemode to set the player to. Can be "survival", "creative", "adventure", or "spectator"
+---@return boolean
+function LuaPlayer.setGamemode(gamemode) end
+
+---@class LuaOfflinePlayer
+---@field firstPlayed number The time the player first played
+---@field lastDeathLocation LuaLocation | nil The last death location of the player
+---@field lastLogin number The time the player last logged in
+---@field lastSeen number The time the player was last seen
+---@field location LuaLocation | nil The last known location of the player
+---@field name string | nil The name of the player
+---@field player LuaPlayer | nil The player instance of the offline player, if they are online
+---@field respawnLocation LuaLocation | nil The respawn location of the player
+---@field uuid string The UUID of the player
+---@field hasPlayedBefore boolean Whether the player has played before
+---@field banned boolean Whether the player is banned
+---@field connected boolean Whether the player is connected
+---@field online boolean Whether the player is online
+---@field whitelisted boolean
+local LuaOfflinePlayer = {}
+

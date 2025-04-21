@@ -20,9 +20,9 @@ location = {}
 ---@param x number The x coordinate of the location
 ---@param y number The y coordinate of the location
 ---@param z number The z coordinate of the location
----@param world? string The name or UUID of the world
----@param yaw? number The yaw of the location
----@param pitch? number The pitch of the location
+---@param world string The name or UUID of the world
+---@param yaw? number The yaw of the location (default: 0)
+---@param pitch? number The pitch of the location (default: 0)
 ---@return LuaLocation
 function location.new(x, y, z, world, yaw, pitch) end
 

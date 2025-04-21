@@ -17,7 +17,18 @@
 ---@class http
 http = {}
 
+---@class HTTPOptions
+---@field timeout number | nil The timeout for the request in milliseconds (default: 30000)
+---@field followRedirects boolean | nil Whether to follow redirects (default: true)
+local HTTPOptions = {}
+
+---@class HTTPResponse
+---@field text string The response body as text
+---@field json table | nil The response body as JSON (if applicable)
+local HTTPResponse = {}
+
 ---Send a GET request to the specified URL
 ---@param url string The URL to send the request to
----@returns string | nil The response body, or nil if the request failed
-function http.get(url) end
+---@param options HTTPOptions The options for the request
+---@return HTTPResponse
+function http.get(url, options) end
